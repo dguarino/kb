@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="/static/css/stmtdb.css" />
+  <link rel="stylesheet" type="text/css" href="/static/jquery/themes/base/jquery.ui.all.css" />
+  <script src="/static/jquery/jquery-1.7.2.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.core.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.widget.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.mouse.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.draggable.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.button.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.resizable.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.dialog.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.position.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.datepicker.js"></script>
+<script>
+jQuery(document).ready(function(){
+
+	$( "#add-request" )
+                .click(function() {
+                        $("#asking_recommend").dialog({
+                                modal:true, 
+                                title:"Read Carefully",
+                                height: 600,
+                                width: 700,
+                                buttons: {
+                                        Ok: function() {
+						$( this ).dialog( "close" );
+						$( "#dialog-form" )
+							.data( 'edit', {ntt_id:-1, title:"New Question"} )
+							.dialog( "open" );
+					}
+				}
+			});
+		}
+	);
+
+	$('.edit').click(function() {
+		ntt_id = $(this).attr('id')
+		//alert("edit id:"+ntt_id);
+		$( "#dialog-form" )
+			.data( 'edit', {ntt_id:ntt_id, title:"Edit Question"} )
+			.dialog( "open" );
+		return false;
+	});
+
+
+	// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+	$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+	$( "#dialog-form" ).dialog({
+		autoOpen: false,
+		position: ['center','top'],
+		height: 'auto',
+		width: 'auto',
+		modal: true,
+		title: "New",
+		buttons: {
+			"Save": function() {
+				var bValid = true;
+
+				if ( bValid ) {
+					//alert($("#edit-form").serialize()); 
+					// send ajax and wait response to close
+					$.ajax({
+						url: "/knowledgebase/questions/add", 
+						type: "GET",
+						data: $("#edit-form").serialize() + "&ntt_id="+$(this).data('edit').ntt_id,
+						success: function( response ){
+							alert( response );
+							if( response.indexOf( "invalid data" ) == -1 )
+							{
+								$( "#dialog-form" ).dialog( "close" );
+								window.location.reload();
+							}
+						},
+					})
+					.fail( function( jqXHR, textStatus ){ 
+						alert("Error processing data: " + textStatus); 
+					});
+				}
+			},
+			Cancel: function() {
+				$( this ).dialog( "close" );
+				$( "div#topics" ).remove();
+			}
+		},
+		open: function() {
+			//alert( $(this).data('edit').entity );
+			$(this).dialog( "option", "title", $(this).data('edit').title );
+			$.ajax({
+				url: "/knowledgebase/questions/edit", 
+				type: "GET",
+				data: { ntt_id:$(this).data('edit').ntt_id },
+				success: function( response ){
+					$("#dialog-form").html( response );
+				},
+			})
+			.fail( function(){ 
+				alert("Error processing data..."); 
+			});
+		}
+	});
+
+});
+</script>
+
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+
+<div class="requests">
+	<span id="add-request" class="add" style="float:left; height:22px;"></span>
+	<h2>Questions</h2>
+</div>
+<div class="request_list">
+	{% for quest in request_list %}
+	<div class="request">
+		<div class="question">
+			<h3>
+				<div class="">{{ quest.question }}</div>
+			</h3>
+			<span id="{{quest.id}}" class="actions edit"></span>
+		</div>
+		<div class="status unanswered">
+			<div class="mini-counts">{{quest.answer_count}}</div>
+			<div>answers</div>
+		</div>
+		<div class="answers">
+		{% for answer in quest.answer.all %}
+			<div><a href="/knowledgebase/map/statement/{{answer.id}}/">{{answer}}</a></div>
+		{% empty %}
+			<div>No answers yet... <a href="/knowledgebase/map/">choose or supply yours</a></div>
+		{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<!-- START - DIALOG -->
+<div id="dialog-form">
+</div>
+<!-- END - DIALOG -->
+
+<div style="display:none">
+{% include 'asking_recommend.html' %}
+</div>
+
+{% endblock %}

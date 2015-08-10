@@ -1,0 +1,23 @@
+<h3>Evidence Detail</h3>
+<table id="item_detail">
+        <tr><td class="descr">Name</td><td>{{record.name}}</td>
+        <tr><td class="descr">Statements</td>
+	<td>
+        {% for stmt in record.statements.all %}
+        	{{stmt.text}}<br/>
+        {% endfor %}
+	</td></tr>
+        <tr><td class="descr">Article</td><td>
+        <span>{{record.article.doi}}</span><br/>
+        <span>{{record.article.title}}</span><br/>
+        <span>{{record.article.authors}}</span><br/>
+        <span>{{record.article.journal}}</span><br/>
+        <span>{{record.article.pub_year}}</span><br/>
+        <span>{{record.article.volume}}</span><br/>
+        <span>{{record.article.pages}}</span>
+	</td></tr>
+        <tr><td class="descr">Added by</td><td>{{record.user.first_name}} {{record.user.last_name}}</td></tr>
+</table>
+<div id="detail_comments">
+{% include 'detail_comments.html' %}
+</div

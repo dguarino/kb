@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="/static/css/stmtdb.css" />
+{% endblock %}
+
+{% block content %}
+<h2>BrainScaleS Knowledge-Base</h2>
+<p>Main targets of this application are:</p>
+<ul>
+<li>Improve communication between modelers and experimenters</li>
+<li>Collect and share guideline statements and evidence from partners</li>
+<li>Manage links among these data and selected bibliographical references</li>
+<li>Collective evaluation of these data for their relevance inside the project</li>
+</ul>
+<p>Having these points in mind, tha application has been centered around three basic concepts, which form the knowledge-base <b>Map</b>:</p>
+<ul>
+<li><b>Statement</b>: a sentence or (very) short paragraph, containing a bit of knowledge (to be) agreed among BrainScaleS Partners</li>
+<li><b>Evidence</b>: quantitative contributions (data, figures, measurements) supporting or contrasting one or more statements</li>
+<li><b>Article</b>: references to publication containing one or more evidence</li>
+</ul>
+<p>The remaining of this page shows some detail of the features to create and manage knowledge items.</p>
+
+<h2>User Based approach</h2>
+<p>Access to the application is given under request, then the newly added user can access the website using username and password supplied. Afterwards a new password can be chosen.</p>
+<img src="/static/images/photos/1_login.png" alt="login" style="border: solid 2px grey;" /> 
+<img src="/static/images/photos/1_changepassword.png" alt="change password" style="border: solid 2px grey;" /> 
+<p>
+To ease interaction with the system, few operation are allowed and (when permitted) always ready to the user, represented just by icons to keep the interface as clean as possible:</p>
+<ul>
+<li><span class="add"></span><b>Creation</b> button: it opens a dialog floating on top of the page to insert data.</li>
+<li><span class="actions edit" style="float:left; margin-top:0px; margin-right:5px; cursor:default;"></span> <b>Editing</b> button: it opens the same dialog populated with already existing data.</li>
+<li><span class="actions delete" style="float:left; margin-top:0px; margin-right:5px; cursor:default;"></span> <b>Deleting</b> button: it enables the user to hide the item (real deletion is left on the admin side, to ensure no data are lost).</li>
+<li><span class="actions spec_page" style="float:left; margin-top:0px; margin-right:5px; cursor:default;"></span> <b>Inspecting</b> button: when available, it opens a new browser tab, containing all data for the item chosen. It is a non-interactive page, in order to avoid multiple path to access and produce the same information.</li>
+</ul>
+
+<h2>Questions: requests for Statements</h2>
+<p>In order to enlarge the knowlegde and shape statements, a 'request for statement' approach has been chosen, resembling <a href="http://stackoverflow.com" target="_blank">stackoverflow.com</a>, a community-driven, programming question&answer website.<br/>
+Once logged-in, users land into a <b>Questions</b> page. Here all asked question are showed, together with eventual links to statements answering the question (and a counter for these answers).</p>
+<img src="/static/images/photos/1_questions.png" alt="questions" style="border: solid 2px grey;" /> 
+
+<h2>Map: the current state</h2>
+<p>The page showing the actual Knowledge-Base has a three columns layout, one for each main object.i<br/>
+Items for each type are initially listed by their publication date, but they can be selected (by clicking) leading to an highlighted, reorganized layout. The selected item is brought on top of its list, colored in yellow, and related items on the other lists are given the same appearace. This behaviour works for each column, enabling the user to see relations starting from each type of object.</p>
+<img src="/static/images/photos/2_map.png" alt="map" style="border: solid 2px grey;" /> 
+
+<h2>Map details</h2>
+<p>Creation, editing, deletion and inspection of item on the map follow the same basic rules: if you created them, you can edit and destroy, otherwise you can just highlight, inspect and comment (see below).<br/>
+In case the selected item is a statement, it gets highlighted together with all its related. A particularity of selecting statements is that supporting evidence are yellow, while contrasting evidence are red instead, thus giving a clear idea of the status in which the statement is.</p>
+<img src="/static/images/photos/3_stmt_highlight.png" alt="statement highlight" style="border: solid 2px grey;" /> 
+
+<h2>Editing Relations</h2>
+<p>Statements have no relation to be specified on their side, being the final point of discussions and evaluation of evidence. Articles as well are standing alone, being just references. On the contrary, evidence do have relations, both towards articles they can have been taken from and towards statements, which they can support or contrast.</p>
+<img src="/static/images/photos/8_new_evidence.png" alt="editing relations" style="border: solid 2px grey;" /> 
+
+<h2>Topics</h2>
+<p>During statement creation (strongly suggested) but also in any other moment, it is possible to assign one or more topic tag to the statement. This ensures you and others to be able to find all relevant statement for a certain topic with just one click (see filters below).</p>
+<img src="/static/images/photos/7_newstatement.png" alt="topics" style="border: solid 2px grey;" /> 
+
+<h2>Filters</h2>
+<p>On top of each list is present a field with two icons: <span class="set_filter">&nbsp;&nbsp;&nbsp;&nbsp;</span> filter and <span class="clean_filter">&nbsp;&nbsp;&nbsp;&nbsp;</span> remove filter. They just set and remove words used to filter out those items in the corresponding list not having them. In case more than one word are supplied as filter, they are searched in OR mode.<br/>
+Each time a filter is applied on a column, it propagates through relation to the other columns in AND mode, summing up their effects.<br/>
+Also topics can be used to set filters for the list of statements, simply click on one of them to sets its words as filters, but be careful, since clicking on them replaces already existing filters for statement column!</p>
+<img src="/static/images/photos/15_filter.png" alt="filters" style="border: solid 2px grey;" /> 
+
+<h2>Comments</h2>
+<p>Once logged in, a user can comment each item. All comments will be listed inside each item fold and only the total amount of comments is shown at the bottom left of the item card. Comments list include username and date for each comment as well as a simple box to add another comment to the same item. To read them better, they are shown also inside detail page of the item.<br/>
+Comments can be removed only by administrators, so think before writing...</p>
+<img src="/static/images/photos/13_comments.png" alt="comments" style="border: solid 2px grey;" /> 
+
+{% endblock %}

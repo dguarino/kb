@@ -1,0 +1,100 @@
+.base div.figure {
+  float: right;
+  margin: 1em;
+}
+
+.base dl {
+  padding-left: 2em;
+} 
+
+.base dd {
+  font-weight: bold;
+  margin-left: 0;
+}
+
+.base dt {
+  margin-left: 2em;  
+}
+
+.base table.fullwidth {
+  width: 100%;
+}
+
+.base table.text {
+  background: transparent;
+  border-top: thin silver solid;
+  border-bottom: thin silver solid;
+}
+
+.base th {
+  background-color: #2d415f;
+  color: #dddddd;
+  border-bottom: thin silver solid;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
+
+.base table.plain th {
+  color: #777777;
+  text-align: left;
+  vertical-align: top;
+  background: transparent;
+  border: none;
+  }
+  
+.base table.plain td {
+    text-align: left;
+  } 
+
+.base th.rowheader { 
+  border-bottom: none;
+  border-right: thin silver solid;
+}
+
+.base td { 
+  text-align: center;
+  padding-left: 0.4ex;
+  padding-right: 0.4ex;
+  background: #eeeeee;
+}
+
+.base table.leftalign td {
+  text-align: left;
+} 
+
+.base td.label {
+  color: #444444;
+  width: 7em;
+} 
+
+.base td.heading {
+  font-weight: bold;
+  color: red;
+  }
+
+.base td.leftalign { 
+  text-align: left;
+  padding-left: 1ex;
+  padding-right: 1ex;
+}
+
+.base td.rightalign { 
+  text-align: right;
+  padding-left: 1ex;
+  padding-right: 1ex;
+}
+
+.base tr.odd {
+  background: #f7f7f7;
+}
+
+.base tr.even {
+  background: #eeeeff;
+}
+
+.base tr.padded td {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 2px;
+} 

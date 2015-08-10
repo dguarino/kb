@@ -1,0 +1,20 @@
+<form id="edit-form">
+	<fieldset>
+        <input type="hidden" name="user" value="{{user.id}}">
+	<label for="name">Text</label>
+	{{form.name}}
+	<label for="position">Position</label>
+	{{form.position}}
+	<label for="article">Article</label>
+	{{form.article}}
+	<br/>
+	<br/>
+	<label for="supports">Supports these statements:</label>
+	{{form.supports}}
+	<br/>
+	<br/>
+	<label for="contradicts">Contradicts these statements:</label>
+	{{form.contradicts}}
+
+	</fieldset>
+</form>

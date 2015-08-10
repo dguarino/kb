@@ -1,0 +1,10 @@
+<div class="comment_start">
+{% for comment in comment_list %}
+   <div class="comment">
+      {{ comment.submit_date }}, {{ comment.user }} said:
+	<div class="comment_content">
+      {{ comment.comment }}
+	</div>
+   </div>
+{% endfor %}
+</div>

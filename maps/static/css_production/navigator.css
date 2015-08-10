@@ -1,0 +1,701 @@
+.refresh_button {
+    clear:left;	
+    display:block;
+}
+
+.navigator {
+    height:700px;
+    float:left;
+    clear:right;
+}
+
+
+.navigator .image_node img{
+	position:relative;
+	width:128px;
+	height:128px;
+	margin-bottom:8px;
+}
+
+.navigator .title_before_image {
+    vertical-align:top;
+}
+
+.navigator .root_node_header_closed_and_selected {
+	/*background:url('/simulationdb/media/images/h1-bg-dark.png') repeat-x scroll center center;*/
+    background:url('/simulationdb/media/images/default-bg-reverse.gif') repeat-x;
+    /*cursor:pointer;*/
+    border:1px solid #CCCCCC;
+    margin-bottom:2px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.navigator .root_node_header_closed_and_not_selected {
+	/*background:url('/simulationdb/media/images/h1-bg-dark.png') repeat-x scroll center center;*/
+    background:url('/simulationdb/media/images/default-bg-reverse.gif') repeat-x;
+    /*cursor:pointer;*/
+    border:1px solid #CCCCCC;
+    margin-bottom:2px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    
+}
+
+.navigator .root_node_header_opened_and_selected {
+    background:url('/simulationdb/media/images/default-bg.gif') repeat-x;	
+    /*cursor:pointer;*/
+    border:1px solid #CCCCCC;
+    margin-bottom:2px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.navigator .root_node_header_opened_and_not_selected {
+    background:url('/simulationdb/media/images/default-bg.gif') repeat-x;
+    /*cursor:pointer;*/
+    border:1px solid #CCCCCC;
+    margin-bottom:2px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.navigator .root_node_header_closed_and_selected:hover {
+    background-color:yellow;
+}
+
+.navigator .root_node_header_closed_and_not_selected:hover {
+    background-color:orange;
+}
+
+.navigator .root_node_header_opened_and_selected:hover {
+    background-color:yellow;	
+}
+
+.navigator .root_node_header_opened_and_not_selected:hover {
+    background-color:orange;	
+}
+
+.navigator .root_node_title_selected {
+    color:white;
+    padding:4px 5px 3px;
+    font-family:"DejaVu Sans","Bitstream Vera Sans",Verdana,Helvetica,sans-serif;
+    font-size:12px;   
+    font-weight:bold;
+}
+
+.navigator .root_node_title_not_selected {
+    color:white;
+    padding:4px 5px 3px;
+    font-family:"DejaVu Sans","Bitstream Vera Sans",Verdana,Helvetica,sans-serif;
+    font-size:12px; 
+    font-weight:bold;  
+}
+
+.navigator .node_title_selected {
+    color:#5B80B2;
+    font-family:"DejaVu Sans","Bitstream Vera Sans",Verdana,Helvetica,sans-serif;
+    font-size:11px;   
+    font-weight:bold;
+    position:relative;
+    top:4px;
+    left:4px;
+}
+
+.navigator .node_title_not_selected {
+    color:#5B80B2;
+    font-family:"DejaVu Sans","Bitstream Vera Sans",Verdana,Helvetica,sans-serif;
+    font-size:11px; 
+    font-weight:bold; 
+    position:relative;
+    top:4px;
+    left:4px;  
+}
+
+.navigator .node_field_value {
+    color:#8BB3E8;
+    font-family:"DejaVu Sans","Bitstream Vera Sans",Verdana,Helvetica,sans-serif;
+    font-size:11px; 
+    font-weight:bold; 
+    font-style:italic;  
+}
+
+.navigator .button {
+    text-decoration:none;
+}
+
+.navigator .root_node_disabled_expander {
+    position:relative;
+    left:5px;
+    top:5px;
+    background-image:url(/simulationdb/media/images/square.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:9px;
+    height:6px;
+    display:block;
+    float:left;
+}
+
+.navigator .node_disabled_expander {
+    position:relative;
+    left:5px;
+    top:8px;
+    background-image:url(/simulationdb/media/images/square.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:9px;
+    height:6px;
+    display:block;
+    float:left;
+}
+
+.navigator .node_disabled_expander .dot {
+    width:9px;
+    height:6px;	
+    float:right;
+}
+
+.navigator .add_object_button {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/insert-18.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .add_object_button .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .add_object_button_gr {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/insert-18-gr.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .add_object_button_gr .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .modify_object_button {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/update-18.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .modify_object_button .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .modify_object_button_gr {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/update-18-gr.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .modify_object_button_gr .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .delete_object_button {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/delete-18.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .delete_object_button .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .delete_object_button_gr {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/delete-18-gr.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .delete_object_button_gr .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .link_object_button {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/link-18.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .link_object_button .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .link_object_button_gr {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/link-18-gr.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .link_object_button_gr .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .unlink_object_button {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/unlink-18.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .unlink_object_button .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .unlink_object_button_gr {
+    position:relative;
+    left:2px;
+    top:2px;
+    background-image:url(/simulationdb/media/images/unlink-18-gr.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:18px;
+    height:18px;
+    display:block;
+    float:right;
+    position:relative;
+}
+
+.navigator .unlink_object_button_gr .button {
+    width:18px;
+    height:18px;	
+    float:right;
+}
+
+.navigator .column {
+
+}
+
+.navigator img {
+    border:0;	
+}
+
+.navigator .root_node_expander_opened {
+    position:relative;
+    left:5px;
+    top:4px;
+    background-image:url(/simulationdb/media/images/root_node_expander_opened.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:9px;
+    height:6px;
+    display:block;
+    float:left;
+}
+
+.navigator .root_node_expander_opened .button {
+    width:9px;
+    height:6px;	
+    float:right;
+}
+
+.navigator .root_node_expander_closed {
+    position:relative;
+    left:5px;
+    top:3px;
+    background-image:url(/simulationdb/media/images/root_node_expander_closed.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:9px;
+    height:6px;
+    display:block;
+    float:left;
+}
+
+.navigator .root_node_expander_closed .button {
+    width:9px;
+    height:6px;	
+    float:right;
+}
+
+.navigator .invisible_content {
+	/*necessary to display link without content*/
+    display:none;	
+}
+
+.navigator .root_node_expander_opened:hover {
+    background-color:orange;	
+}
+
+.navigator .root_node_expander_closed:hover {
+    background-color:orange;	
+}
+
+.navigator .root_node_container {
+    background-color:gray;
+    padding-left:10px;
+    height:auto;
+    margin-bottom:2px;
+    background-color:white;
+}
+
+.navigator .root_node_container_opened {
+    background-color:gray;
+    padding-left:10px;
+    height:auto;
+    margin-bottom:2px;
+    background-color:white;
+    border:1px solid #CCCCCC;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.navigator .root_node_container_opened .node_header_closed_and_selected {
+    border-bottom:1px solid #EEEEEE;	
+}
+
+.navigator .root_node_container_opened .node_header_closed_and_not_selected {
+	border-bottom:1px solid #EEEEEE;
+}
+
+.navigator .root_node_container_opened .node_header_opened_and_selected {
+	border-bottom:1px solid #EEEEEE;
+}
+
+.navigator .root_node_container_opened .node_header_opened_and_not_selected {
+	border-bottom:1px solid #EEEEEE;
+}
+
+.navigator .node_header_closed_and_selected {
+    cursor:pointer;
+    background-color:aquamarine;
+    height:18px;
+    padding-top:5px;
+}
+
+.navigator .node_header_closed_and_not_selected {
+    /*cursor:pointer;*/
+    color:#003366;
+    height:auto;
+    min-height:22px;
+}
+
+.navigator .node_header_opened_and_selected {
+    /*cursor:pointer;*/
+    background-color:aquamarine;
+    height:22px;
+}
+
+.navigator .node_header_opened_and_not_selected {
+    /*cursor:pointer;*/
+    color:#003366;
+    height:22px;
+}
+
+.navigator .node_header_closed_and_selected:hover {
+    background-color:lightsteelblue;
+}
+
+.navigator .node_header_closed_and_not_selected:hover {
+    background-color:lavender;
+}
+
+.navigator .node_header_opened_and_selected:hover {
+    background-color:lightsteelblue;
+}
+
+.navigator .node_header_opened_and_not_selected:hover {
+    background-color:lavender;
+}
+
+.navigator .node_expander_closed {
+    position:relative;
+    left:5px;
+    top:8px;
+    background-image:url(/simulationdb/media/images/node_expander_closed.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:9px;
+    height:6px;
+    display:block;
+    float:left;
+}
+
+.navigator .node_expander_closed .button {
+    width:9px;
+    height:6px;	
+    float:right;
+}
+
+.navigator .node_expander_opened {
+    position:relative;
+    left:5px;
+    top:8px;
+    background-image:url(/simulationdb/media/images/node_expander_opened.png);
+    background-repeat:no-repeat;
+    margin-right:5px;
+    width:9px;
+    height:6px;
+    display:block;
+    float:left;
+}
+
+.navigator .node_expander_opened .button {
+    width:9px;
+    height:6px;	
+    float:right;
+}
+
+.navigator table {
+    font-family:"DejaVu Sans","Bitstream Vera Sans",Verdana,Helvetica,sans-serif;
+}
+
+.navigator a.ordering_field:link    {text-decoration: none; color: #333333;}
+.navigator a.ordering_field:visited { text-decoration: none; color: #333333;}
+.navigator a.ordering_field:hover   { text-decoration: none; color: #999999;}
+
+.navigator table th {
+	padding:2px 5px;
+    border:1px solid #CCCCCC;
+    background:#E1E1E1 url(/simulationdb/media/images/nav-bg.gif) repeat-x scroll left bottom;
+    text-align:left;
+    color:#666666;
+    font-size:11px;  
+    font-weight:bold;	
+}
+
+.navigator table td {
+	padding:2px 5px;
+    border:1px solid #CCCCCC;
+    text-align:left;
+    color:#5B80B2;
+    font-size:11px;  
+    font-weight:bold;	
+}
+
+.navigator .expander_cell {
+    width:10px;	
+}
+
+.navigator table thead {
+    display:table-header-group;
+    vertical-align:middle;
+}
+
+.navigator thead tr{
+    /*background:#E1E1E1 url(/simulationdb/media/images/nav-bg.gif) repeat-x scroll left top;*/	
+}
+
+.navigator table thead tr {
+    display:table-row;
+}
+
+.navigator .expanded_row {
+    border:1px solid #CCCCCC;
+    
+}
+
+.navigator .cell_details {
+	padding:10px;
+	border:10px solid #DDDDDD;
+}
+
+.navigator .cell_details td{
+    /*padding:15px;	
+    margin:10px;*/
+}
+
+.navigator .footer{
+    background:#E1E1E1 url(/simulationdb/media/images/nav-bg.gif) repeat-x scroll left bottom;
+}
+
+.navigator .footer td{
+    text-align:center;
+}
+
+.navigator .paginator {
+    text-align:center;
+}
+
+.navigator .paginator .counter{
+    text-align:center;
+    vertical-align:middle;
+    font-size:10px;
+    padding-top:2px;
+    /*float:right;*/
+}
+
+.navigator .paginator a {
+	font-size:10px;
+    font-weight:bold;	
+}
+
+.navigator .paginator a.table_page:link    {text-decoration: none; color: #333333;}
+.navigator .paginator a.table_page:visited { text-decoration: none; color: #333333;}
+.navigator .paginator a.table_page:hover   { text-decoration: none; color: #999999;}
+
+.navigator .paginator a.selected_page:link { text-decoration: none; color:#417690;}
+.navigator .paginator a.selected_page:visited { text-decoration: none; color:#417690;}
+.navigator .paginator a.selected_page:hover   { text-decoration: none; color: #FFE761;}
+
+.navigator .row_even{
+    background-color:#EDF3FE;
+}
+
+.navigator .row_even:hover{
+    background-color:lavender;
+}
+
+.navigator .row_odd{
+    background-color:white;
+}
+
+.navigator .row_odd:hover{
+    background-color:lavender;
+}
+
+.navigator .table_container {
+    margin-left:30px;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-right:10px;
+}
+
+.navigator .root_table_container {
+    background-color:gray;
+    padding-left:10px;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-right:10px;
+    height:auto;
+    margin-bottom:2px;
+    background-color:white;
+    border:1px solid #CCCCCC;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.navigator .table_container table {
+    /*width:auto;*/	
+}
+
+.navigator .table_container .node_header_closed_and_not_selected {
+    padding:4px 5px 3px;	
+}
+
+.navigator .table_container .node_header_opened_and_not_selected {
+    padding:4px 5px 3px;	
+}
+
+.navigator .node_container_opened {
+    padding-left:20px;
+    /*background-color:white;*/
+    color:#003366;	
+}
+
+.navigator .node_container_closed {
+    padding-left:20px;	
+    padding-bottom:40px;
+}
+
+.navigator .ctrl_selection {
+    background-color:lightsteelblue;
+    cursor:pointer;	
+}
+
+.navigator .ctrl_selection:hover {
+    background-color:lightskyblue;	
+}
+
+.navigator .selected_node {
+    background-color:aquamarine;	
+}
+
+.navigator .selected_node:hover {
+    cursor:pointer;
+    background-color:lightsteelblue;
+}

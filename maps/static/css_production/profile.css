@@ -1,0 +1,184 @@
+.base #middleContent {
+    float:left;
+    margin-right:20px;
+    width:42%;
+}
+
+#connections_by_months {
+    margin-left:-30px;
+    margin-top:15px;
+    width:auto;
+    height:150px;
+    font-size:5px;
+}
+
+.members {
+	/*contains members of the same groups of the user*/
+	margin-top:20px; 
+    margin-right:10px;
+}
+
+.members h4 {
+    margin-left:10px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.members a {
+    text-decoration: none;
+    color:#5B80B2;
+}
+
+.members ul {
+    padding-left:100px;
+}
+
+/*
+#list_of_members a {
+    text-decoration: none;
+    color:#5B80B2;
+}
+*/
+#open_groups_button,#open_emails_button,#open_members_button,#open_connections_button,#open_files_button,#open_emails_button,.expander {
+    cursor:pointer;
+}
+
+/*
+overload h3 and h4 for class members,abstract and history
+*/
+
+h3 {
+    margin-right:5px;
+}
+
+h3 span {
+    margin-right:5px;
+}
+
+h3 a img {
+    vertical-align:middle;
+}
+
+h4 a img {
+    vertical-align:bottom;
+}
+
+#rightContent .delete_button {
+    vertical-align:middle;
+}
+
+#rightContent .update_button {
+    vertical-align:middle;
+}
+
+.history h3 {
+    margin-bottom:10px;
+    margin-top:10px;
+}
+
+.history h4 {
+    margin-left:25px;
+    margin-top:10px;
+}
+
+.history table {
+    border:5px solid #DDD;  
+    font-family: 'DejaVu Sans', 'Bitstream Vera Sans', Verdana, Helvetica, sans-serif;
+    font-size: 12px;
+    width:100%;
+}
+
+.history table {
+    font-family:"DejaVu Sans","Bitstream Vera Sans",Verdana,Helvetica,sans-serif;
+}
+
+.history table th {
+    padding:2px 5px;
+    border:1px solid #CCCCCC;
+    background:#E1E1E1 url(/simulationdb/media/images/nav-bg.gif) repeat-x scroll left bottom;
+    text-align:left;
+    color:#666666;
+    font-size:11px;    
+}
+
+.history table td {
+	background:none;
+    padding:2px 5px;
+    border:1px solid #CCCCCC;
+    text-align:left;
+    color:#5B80B2;
+    font-size:11px;  
+    font-weight:bold;   
+}
+
+.history table thead {
+    display:table-header-group;
+    vertical-align:middle;
+}
+
+.history table thead tr {
+    display:table-row;
+}
+
+.history .row_even{
+    background-color:#EDF3FE;
+}
+
+.history .row_even:hover{
+    background-color:lavender;
+}
+
+.history .row_odd{
+    background-color:white;
+}
+
+.history .row_odd:hover{
+    background-color:lavender;
+}
+
+.history .footer{
+    background:#E1E1E1 url(/simulationdb/media/images/nav-bg.gif) repeat-x scroll left bottom;
+}
+
+.history .footer td {
+    background:none;
+}
+
+.history .detail_row td{
+    border-top:5px solid #DDD;
+    border-bottom:5px solid #DDD;
+    margin-left:20px;
+    padding:5px;
+    font-size:12px;
+    color:#006;
+}
+
+.history .detail_row td .notes {
+    width:90%;
+    margin-top:15px;
+    margin-bottom:15px;
+    margin-left:15px;
+    color:#5B80B2;
+}
+
+.history .request_refused {
+    color:red;
+}
+
+.history .request_requested {
+    color:#DDD;
+}
+
+.history .request_accepted a {
+    color:green;
+    text-decoration:none;
+    align:center;
+}
+
+.address {
+    width:400px;
+    margin-top:15px;
+    margin-bottom:15px;
+    margin-left:15px;
+    color:#5B80B2;
+}

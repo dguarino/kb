@@ -1,0 +1,52 @@
+{% block page %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <link rel="icon" type="image/png" href="/static/images/logos/logo.png" />
+  <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/navbar.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/form.css" media="screen" />
+  {% block styles %} 
+  {% endblock %}
+  <title>{% block title %}KB - Knowledge Base{% endblock %}</title>
+  {% block extrahead %}{% endblock %}
+</head>
+
+<body class="base" {% if enable_scroll_position %}onunload="rememberScrollPosition();" onload="applyScrollPosition();"{% endif %}> 
+ <div id="container">
+  <div id="navbar">
+   <span class="floatleft">
+    <span class="last_navbar_item">
+     <span class="bkb">Knowledge Base</span>
+     {% if user.is_authenticated %} | 
+      <a href="/knowledgebase/map">Map</a> | 
+      <a href="/knowledgebase/questions">Questions</a> | 
+      <a href="/knowledgebase/upload">BibTeX Upload</a> | 
+     {% endif %}
+    </span>
+   </span>
+   <span class="floatright" style="padding-left: 0.5em;">
+    {% if user.is_authenticated %}
+    <span>{{ user.username }}</span> | 
+    <a href="/knowledgebase/logout">Logout</a> | 
+    <a href="/knowledgebase/help">Help</a>
+    <!--a href="{{SITE_ROOT}}/knowledgebase/password/change">Change Password</a-->
+    {% endif %}
+   </span>
+    {% block navbar %}
+    {% endblock %}
+  </div>
+
+  <div id="pageBody">
+    {% block header %}{% endblock %}	
+    {% block content %}{% endblock %}
+  </div> <!-- pageBody -->
+
+  <div id="pageFooter">
+    {% block footer %}
+    {% endblock %}
+  </div>
+ </div> <!-- container -->
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% load comments %}
+{% get_comment_count for record as comment_count %}
+<div class="comment_count">{{ comment_count }} comments:</div>
+<div class="detail_list">
+        {% render_comment_list for record %}
+</div>

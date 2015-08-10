@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% load comments %}
+{% load tagging_tags %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="/static/css/stmtdb.css" />
+  <link rel="stylesheet" type="text/css" href="/static/jquery/themes/base/jquery.ui.all.css" />
+  <script src="/static/jquery/jquery-1.7.2.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.core.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.widget.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.mouse.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.draggable.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.button.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.resizable.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.dialog.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.position.js"></script>
+  <script src="/static/jquery/ui/jquery.ui.datepicker.js"></script>
+<script>
+
+function setFilterAndSubmit( fieldType, Value )
+{
+	//alert(fieldType+' '+Value);
+	$('input[name=filter_'+ fieldType +']').val( Value );
+	$('#form_'+ fieldType ).submit();
+}
+
+function resetFilterAndSubmit( fieldType )
+{
+	$('input[name=filter_'+ fieldType +']').val("");
+	$('#form_'+ fieldType ).append( $("<input>").attr('type','hidden').attr('name','clean_'+ fieldType).val('true') );
+	$('#form_'+ fieldType ).submit();
+}
+
+jQuery(document).ready(function(){
+
+	$( '#clean_stmt' ).click( function(){resetFilterAndSubmit( 'stmt' );} );
+	$( '#clean_evdc' ).click( function(){resetFilterAndSubmit( 'evdc' );} );
+	$( '#clean_artl' ).click( function(){resetFilterAndSubmit( 'artl' );} );
+
+	$('.toggle').click(function() {
+		$(this).next().toggle();
+		return false;
+	}).next().hide();
+
+
+	$('.delete').click(function() {
+		if( !confirm( "Do You really want to delete this record?" ) ) return false;
+		ntt_id = $(this).attr('id')
+		entity = ""
+		if( $(this).hasClass('stmt') ) entity = "stmt"
+		if( $(this).hasClass('evdc') ) entity = "evdc"
+		if( $(this).hasClass('artl') ) entity = "artl"
+		//alert("delete id:"+ntt_id +" entity:"+entity);
+		// send ajax and wait response to close
+		$.ajax({
+			url: "/knowledgebase/map/delete",
+			type: "GET",
+			data: { entity:entity, ntt_id:ntt_id },
+			success: function( response ){
+				//alert( response );
+				window.location.reload();
+			},
+		})
+		.fail( function(){
+			alert("Error processing data...");
+		});
+		return false;
+	});
+
+
+	$('.edit').click(function() {
+		ntt_id = $(this).attr('id')
+		entity = ""
+		if( $(this).hasClass('stmt') ) { entity = "stmt"; title="Edit Statement"; }
+		if( $(this).hasClass('evdc') ) { entity = "evdc"; title="Edit Evidence"; }
+		if( $(this).hasClass('artl') ) { entity = "artl"; title="Edit Article"; }
+		//alert("edit id:"+ntt_id +" entity:"+entity);
+		$( "#dialog-form" )
+			.data( 'edit', {ntt_id:ntt_id, entity:entity, title:title} )
+			.dialog( "open" );
+		return false;
+	});
+
+
+	// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+	$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+	$( "#dialog-form" ).dialog({
+		autoOpen: false,
+		position: ['center','top'],
+		height: 'auto',
+		width: 'auto',
+		modal: true,
+		title: "New",
+		buttons: {
+			"Save": function() {
+				var bValid = true;
+
+				if ( bValid ) {
+					//alert($("#edit-form").serialize()); 
+					// send ajax and wait response to close
+					$.ajax({
+						url: "/knowledgebase/map/add", 
+						type: "GET",
+						data: $("#edit-form").serialize() + "&entity="+$(this).data('edit').entity + "&ntt_id="+$(this).data('edit').ntt_id,
+						success: function( response ){
+							alert( response );
+							if( response.indexOf( "invalid data" ) == -1 )
+							{
+								$( "#dialog-form" ).dialog( "close" );
+								$( "div#topics" ).remove();
+								window.location.reload();
+							}
+						},
+					})
+					.fail( function( jqXHR, textStatus ){ 
+						alert("Error processing data: " + textStatus); 
+					});
+				}
+			},
+			Cancel: function() {
+				$( this ).dialog( "close" );
+				$( "div#topics" ).remove();
+			}
+		},
+		open: function() {
+			//alert( $(this).data('edit').entity );
+			$(this).dialog( "option", "title", $(this).data('edit').title );
+			$.ajax({
+				url: "/knowledgebase/map/edit", 
+				type: "GET",
+				data: { entity:$(this).data('edit').entity, ntt_id:$(this).data('edit').ntt_id },
+				success: function( response ){
+					$("#dialog-form").html( response );
+				},
+			})
+			.fail( function(){ 
+				alert("Error processing data..."); 
+			});
+		}
+	});
+
+	$( "#add-stmt" )
+		.click(function() {
+			$("#statement_recommend").dialog({
+				modal:true, 
+				title:"Read Carefully",
+				height: 600,
+				width: 700,
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+						$( "#dialog-form" )
+							.data( 'edit', {ntt_id:-1, entity:"stmt", title:"New Statement"} )
+							.dialog( "open" );
+					}
+				}
+			});
+		}
+	);
+
+	$( "#add-evdc" )
+		.click(function() {
+			$( "#dialog-form" )
+				.data( 'edit', {ntt_id:-1, entity:"evdc", title:"New Evidence"} )
+				.dialog( "open" );
+		}
+	);
+
+	$( "#add-artl" )
+		.click(function() {
+			$( "#dialog-form" )
+				.data( 'edit', {ntt_id:-1, entity:"artl", title:"New Article"} )
+				.dialog( "open" );
+		}
+	);
+
+
+});
+</script>
+
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+
+<div id="statements" class="map_column">
+	<form id="form_stmt" class="column-controls" method="post" action="/knowledgebase/map/">
+		{% csrf_token %}
+		<div class="column-start">
+		<span id="add-stmt" class="add"></span>
+		<span class="column-title">Statements</span>
+		</div>
+		<div class="filtering">
+		<input type="text" class="filter_field" name="filter_stmt" value="{{filter_stmt}}" title="Filter"/>
+		<input id="clean_stmt" type="button" value="" class="search_button clean_filter"/>
+		<input type="submit" value="" class="search_button set_filter"/>
+		</div>
+	</form>
+	<div id="stmt_list">
+		{% for stmt in stmt_list %}
+		<a href="/knowledgebase/map/statement/{{stmt.id}}">
+		<div class="map_list {{stmt.color}}">
+			{{ stmt.text }}
+		</div>
+		</a>
+		{% tags_for_object stmt as tags %}
+		{% if user.id == stmt.user.id %}
+		<span id="{{stmt.id}}" class="actions edit stmt"></span>
+		<span id="{{stmt.id}}" class="actions delete stmt"></span>
+		{% endif %}
+		<a class="actions spec_page" href="/knowledgebase/detail/statement/{{stmt.id}}" target="_blank"></a>
+		{% get_comment_count for stmt as stmt_comment_count %}
+		<span class="actions comment_count">Topics and {{ stmt_comment_count }} Comments</span>
+		<span class="actions toggle"></span>
+		<div class="map_list {{stmt.color}} record-content cont{{stmt.color}}">
+		<span class="tags"><strong>Topics</strong>: {% for tag in tags %}<a name="tag" title="See all '{{tag}}' statements" onclick="setFilterAndSubmit('stmt','{{tag}}')">{{tag}}</a>, {% endfor %}<br/><strong>Comments</strong>:</span>
+			{% render_comment_list for stmt %}
+			{% render_comment_form for stmt %}
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+
+<div id="evidences" class="map_column">
+	<form id="form_evdc" class="column-controls" method="post" action="/knowledgebase/map/">
+		{% csrf_token %}
+		<div class="column-start">
+		<span id="add-evdc" class="add"></span>
+		<span class="column-title">Evidence</span>
+		</div>
+		<div class="filtering">
+		<input type="text" class="filter_field" name="filter_evdc" value="{{filter_evdc}}" title="Filter"/>
+		<input id="clean_evdc" type="button" value="" class="search_button clean_filter"/>
+		<input type="submit" value="" class="search_button set_filter"/>
+		</div>
+	</form>
+	<div id="evidence_list">
+		{% for evidence in evidence_list %}
+		<a href="/knowledgebase/map/evidence/{{evidence.id}}">
+		<div class="map_list {{evidence.color}}">{{ evidence.name }}</div>
+		</a>
+		{% if user.id == evidence.user.id %}
+		<span id="{{evidence.id}}" class="actions edit evdc"></span>
+		<span id="{{evidence.id}}" class="actions delete evdc"></span>
+		{% endif %}
+		<a class="actions spec_page" href="/knowledgebase/detail/evidence/{{evidence.id}}" target="_blank"></a>
+		{% get_comment_count for evidence as evdc_comment_count %}
+		<span class="actions comment_count">{{ evdc_comment_count }} Comments</span>
+		<span class="actions toggle"></span>
+		<div class="map_list {{evidence.color}} record-content cont{{evidence.color}}">
+			{% render_comment_list for evidence %}
+			{% render_comment_form for evidence %}
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+
+<div id="articles" class="map_column">
+	<form id="form_artl" class="column-controls" method="post" action="/knowledgebase/map/">
+		{% csrf_token %}
+		<div class="column-start">
+		<span id="add-artl" class="add"></span>
+		<span class="column-title">Articles</span>
+		</div>
+		<div class="filtering">
+		<input type="text" class="filter_field" name="filter_artl" value="{{filter_artl}}" title="Filter"/>
+		<input id="clean_artl" type="button" value="" class="search_button clean_filter"/>
+		<input type="submit" value="" class="search_button set_filter"/>
+		</div>
+	</form>
+	<div id="article_list">
+		{% for article in article_list %}
+		<a href="/knowledgebase/map/article/{{article.id}}">
+		<div class="map_list {{article.color}}">{{ article }}</div>
+		</a>
+		{% if user.id == article.user.id %}
+		<span id="{{article.id}}" class="actions edit artl"></span>
+		<span id="{{article.id}}" class="actions delete artl"></span>
+		{% endif %}
+		<a class="actions spec_page" href="/knowledgebase/detail/article/{{article.id}}" target="_blank"></a>
+		{% get_comment_count for article as artl_comment_count %}
+		<span class="actions comment_count">{{ artl_comment_count }} Comments</span>
+		<span class="actions toggle"></span>
+		<div class="map_list {{article.color}} record-content cont{{article.color}}">
+			{% render_comment_list for article %}
+			{% render_comment_form for article %}
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+<!-- START - DIALOG -->
+<div id="dialog-form">
+</div>
+<!-- END - DIALOG -->
+
+<div style="display:none">
+{% include 'statement_recommend.html' %}
+</div>
+
+{% endblock %}

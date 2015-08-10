@@ -1,0 +1,16 @@
+{% load comments %}
+<form action="{% comment_form_target %}" method="post">
+        {% csrf_token %}
+        {% if next %}<input name="next" type="hidden" value="{{ next }}" />{% endif %}
+        {% for field in form %}
+            {% if field.is_hidden %}
+                {{ field }}
+            {% else %}
+                {% if field.name != "name" and field.name != "email" and field.name != "url" %}
+                    {% if field.errors %}{{ field.errors }}{% endif %}
+                    {{ field }}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <input class="submit-post" name="post" type="submit" value="Add Comment" />
+</form>

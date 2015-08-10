@@ -1,0 +1,60 @@
+<form id="edit-form">
+	<link rel="stylesheet" type="text/css" href="/static/chosen/chosen.css" />
+	<script type="text/javascript" src="/static/chosen/chosen.jquery.js"></script>
+	<fieldset>
+        <input type="hidden" name="user" value="{{user.id}}">
+        <input type="hidden" id="id_topics" name="topics" value="{{topics}}">
+        <input type="hidden" id="id_tags" name="tags" value="{{topics}}">
+	<label for="text">Text</label>
+	{{form.text}}
+	<label for="description">Description</label>
+	{{form.description}}
+	<label>Topics</label>
+	<select data-placeholder="Select Topics ..." style="width:380px;" class="chzn-select" multiple >
+		<option value=""></option>
+		<optgroup label="Functional">
+			<option {%if "receptive field" in topic_list %}selected{%endif%}>receptive field</option>
+			<option {%if "" in topic_list %}selected{%endif%}>thalamo-cortical pathway</option>
+			<option {%if "thalamo-cortical pathway" in topic_list %}selected{%endif%}>spatial/temporal frequency</option>
+			<option {%if "contrast/orientation/direction selectivity" in topic_list %}selected{%endif%}>contrast/orientation/direction selectivity</option>
+		</optgroup>
+		<optgroup label="Organization">
+			<option {%if "topology" in topic_list %}selected{%endif%}>topology</option>
+			<option {%if "convergent/divergent connectivity" in topic_list %}selected{%endif%}>convergent/divergent connectivity</option>
+			<option {%if "agonist/antagonist connectivity" in topic_list %}selected{%endif%}>agonist/antagonist connectivity</option>
+		</optgroup>
+		<optgroup label="Structural">
+			<option {%if "cell type" in topic_list %}selected{%endif%}>cell type</option>
+			<option {%if "spiking regime" in topic_list %}selected{%endif%}>spiking regime</option>
+			<option {%if "synaptic plasticity" in topic_list %}selected{%endif%}>synaptic plasticity</option>
+			<option {%if "connectivity" in topic_list %}selected{%endif%}>connectivity</option>
+		</optgroup>
+		<optgroup label="Modeling">
+			<option {%if "excitability model" in topic_list %}selected{%endif%}>excitability model</option>
+			<option {%if "connectivity structure" in topic_list %}selected{%endif%}>connectivity structure</option>
+			<option {%if "parameter space" in topic_list %}selected{%endif%}>parameter space</option>
+			<option {%if "performance" in topic_list %}selected{%endif%}>performance</option>
+			<option {%if "data flow" in topic_list %}selected{%endif%}>data flow</option>
+		</optgroup>
+	</select>
+	</fieldset>
+</form>
+	<script type="text/javascript">
+// NOTE: Chosen library has an issue when used inside jquery
+// PROBLEM:
+//       it shows the scrollbar in dialog even when not active
+//       and the div mimiking the select dropdown pane shows beneath the dialog
+// SOLUTION:
+//       https://github.com/harvesthq/chosen/issues/86 (levushka commented and tompaton fix)
+//       https://github.com/tompaton/chosen/commit/fda07051161f3fffe6049362b6c9b66ffbe857d1#diff-1
+$(".chzn-select").chosen().change( function(){
+	// get selected values and serialize them
+	txt = '';
+	$(".chzn-select option:selected").each(function () {
+		txt += $(this).text() + ", ";
+	});
+	$('#id_tags').val( txt );
+	$('#id_topics').val( txt );
+}); 
+$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
+	</script>

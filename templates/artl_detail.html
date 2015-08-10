@@ -1,0 +1,16 @@
+<h3>Article Detail</h3>
+<table id="item_detail">
+	<tr><td class="descr">DOI</td><td>{{record.doi}}</td></tr>
+	<tr><td class="descr">Title</td><td>{{record.title}}</td></tr>
+	<tr><td class="descr">Authors</td><td>{{record.authors}}</td></tr>
+	<tr><td class="descr">Journal</td><td>{{record.journal}}</td></tr>
+	<tr><td class="descr">Publisher</td><td>{{record.publisher}}</td></tr>
+	<tr><td class="descr">Year</td><td>{{record.year}}</td></tr>
+	<tr><td class="descr">Volume</td><td>{{record.volume}}</td></tr>
+	<tr><td class="descr">Pages</td><td>{{record.pages}}</td></tr>
+        <tr><td class="descr">Added by</td><td>{{record.user.first_name}} {{record.user.last_name}}</td></tr>
+</table>
+<br/>
+<div id="detail_comments">
+{% include 'detail_comments.html' %}
+</div>

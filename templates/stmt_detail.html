@@ -1,0 +1,11 @@
+<h3>Statement Detail</h3>
+<table id="item_detail">
+	<tr><td class="descr">Text</td><td>{{record.text}}</td></tr>
+	<tr><td class="descr">Description</td><td>{{record.description}}</td></tr>
+        <tr><td class="descr">Topic</td><td>{% for tag in record.tags %}{{tag}}, {% endfor %}</td></tr>
+        <tr><td class="descr">Added by</td><td>{{record.user.first_name}} {{record.user.last_name}}</td></tr>
+</table>
+<br/>
+<div id="detail_comments">
+{% include 'detail_comments.html' %}
+</div>

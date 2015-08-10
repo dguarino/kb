@@ -1,0 +1,20 @@
+#editor_sidebar {
+    float:left;
+    border:1px solid #CCCCCC;
+    margin-right:10px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;	  
+}
+
+#editor_sidebar ul{
+    list-style-type:square;
+    padding:0;
+    margin-left:25px;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-right:10px;
+}
+
+#editor_sidebar ul li{
+    background-color:white; 
+}
