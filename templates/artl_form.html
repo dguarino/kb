@@ -1,12 +1,14 @@
 <form id="edit-form">
+	<link rel="stylesheet" type="text/css" href="/static/taginput/jquery.taginput.css" />
+	<script type="text/javascript" src="/static/taginput/jquery.taginput.src.js"></script>
 	<fieldset>
 	<input type="hidden" name="user" value="{{user.id}}">
-	<label for="doi">DOI</label>
-	{{form.doi}}
+    <input type="hidden" id="id_annotations" name="annotations" value="{{annotations}}"/>
+    <input type="hidden" id="id_tags" name="tags" value="{{annotations}}"/>
 	<label for="title">Title</label>
 	{{form.title}}
-	<label for="authors">Authors</label>
-	{{form.authors}}
+	<label for="author">Authors</label>
+	{{form.author}}
 	<label for="journal">Journal</label>
 	{{form.journal}}
 	<label for="publisher">Publisher</label>
@@ -17,5 +19,17 @@
 	{{form.volume}}
 	<label for="pages">Pages</label>
 	{{form.pages}}
+	<label>Annotations</label>
+	<!-- {{form.annotations}} -->
+	<input id="notes"></input>
 	</fieldset>
 </form>
+
+<script type="text/javascript">
+$('notes').taginput({
+	style: 'bootstrap',
+	placeholder: 'Add annotation ...'
+	// $('#id_tags').val( txt );
+	// $('#id_topics').val( txt );
+});
+</script>

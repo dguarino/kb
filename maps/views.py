@@ -132,9 +132,15 @@ def add( request ) :
 			a = Article.objects.get( pk=ntt_id )
 			form = ArticleForm( request.GET, instance=a )
 			res = form.save()
+			a.tags = form.cleaned_data['tags']
+			a.annotations = ', '.join(a.tags.values_list('name',flat=True) )
+			a.save()
 		else :
 			form = ArticleForm( request.GET )
 			res = form.save()
+			a.tags = form.cleaned_data['tags']
+			a.annotations = ', '.join(a.tags.values_list('name',flat=True) )
+			res = a.save()
 	# feedback
 	if res != ValueError :
 		return HttpResponse( "Record successfully saved" )
@@ -146,12 +152,14 @@ def add( request ) :
 @login_required
 def edit( request ) :
 	if not request.user.is_authenticated() :
-    		return HttpResponse( "You need to be logged in to do this..." )
+		return HttpResponse( "You need to be logged in to do this..." )
 	user = request.user
 	entity = request.GET.get('entity', "")
 	ntt_id = int( request.GET.get('ntt_id', 0) )
 	topic = ''
 	topic_list = []
+	annotations = ''
+	annotations_list = []
 	# Entity type switch
 	if entity == 'stmt' :
 		form = StatementForm( auto_id=False )
@@ -161,6 +169,7 @@ def edit( request ) :
 			if len(s.tags) > 0 :
 				topic_list = s.tags.values_list('name',flat=True)
 				topic = ', '.join( topic_list )
+				print topic
 			form = StatementForm( instance=s, initial={'tags':topic} )
 	elif entity == 'evdc' :
 		form = EvidenceForm( auto_id=False )
@@ -173,9 +182,23 @@ def edit( request ) :
 		formtempl = "artl_form.html"
 		if ntt_id > 0 :
 			a = Article.objects.get( pk=ntt_id )
-			form = ArticleForm( instance=a )
+			if len(a.tags) > 0 :
+				annotations_list = a.tags.values_list('name',flat=True)
+				annotations = ', '.join( annotations_list )
+				print annotations
+			form = ArticleForm( instance=a, initial={'tags':annotations} )
 	# create form html
-	template_vars = RequestContext( request, { 'form':form, 'user':user, 'topics':topic, 'topic_list':topic_list } )
+	template_vars = RequestContext( 
+		request, 
+		{ 
+			'form':form, 
+			'user':user, 
+			'topics':topic, 
+			'topic_list':topic_list, 
+			'annotations':annotations, 
+			'annotations_list':annotations_list 
+		} 
+	)
 	return render_to_response( formtempl, template_vars )
 
 
@@ -279,7 +302,7 @@ def getFilters( request ) :
 	# filtered ids
 	filtered_artl_ids = []
 	if artl_string != "" :
-       		entry_query = get_query( artl_string, ['title','author'] )
+       		entry_query = get_query( artl_string, ['title','author','annotations',] )
        		artl_list = Article.objects.filter( entry_query )
 		for a in artl_list :
 			filtered_artl_ids.append( a.id )

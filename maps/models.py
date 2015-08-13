@@ -7,7 +7,6 @@ from django.forms import ModelForm, CharField, Textarea, DateField, ChoiceField,
 import types
 
 
-
 # Statements
 class Statement( models.Model ) :
 	text = models.CharField( max_length=250, unique=True, null=False )
@@ -28,7 +27,6 @@ class Statement( models.Model ) :
 		if len(text) > 60 :
 			text = text[0:60] + "..."
 		return text
-
 
 class StatementForm( ModelForm ) :
 	tags= CharField( widget=HiddenInput( attrs={'id':"tags"} ), required=False )
@@ -77,6 +75,14 @@ class Article( models.Model ) :
 	pages = models.CharField( max_length=20, null=True, blank=True )
 	user = models.ForeignKey( User, null=False )
 	hide = models.BooleanField( default=False ) 
+	annotations = models.CharField( max_length=250, blank=True, null=True )
+	tags = models.CharField( 'Annotations', max_length=250, blank=True, null=True )
+
+	def _get_tags(self):
+		return Tag.objects.get_for_object(self)
+	def _set_tags(self, tags):
+		Tag.objects.update_tags(self, tags)
+	tags = property(_get_tags, _set_tags)
 
 	def __unicode__( self ) :
 		title = self.title
@@ -88,6 +94,9 @@ class Article( models.Model ) :
 		return author + " - " + str(self.year) + " - " + title
 
 class ArticleForm( ModelForm ) :
+	tags = CharField( widget=HiddenInput( attrs={'id':"tags"} ), required=False )
+	annotations = CharField( widget=HiddenInput( attrs={'id':"annotations"} ), required=False )
+
 	class Meta :
 		model = Article
 		fields = ['title','author','journal', 'publisher', 'year', 'volume', 'pages', 'number', 'user']
@@ -95,6 +104,8 @@ class ArticleForm( ModelForm ) :
 			'title': Textarea( attrs={ 'id':"title", 'rows':1, 'class':"text ui-widget-content ui-corner-all"} ),
 			'author': Textarea( attrs={ 'id':"author", 'rows':1, 'class':"text ui-widget-content ui-corner-all" } ),
 			'journal': Textarea( attrs={ 'id':"journal", 'rows':1, 'class':"text ui-widget-content ui-corner-all" } ),
+			'publisher': Textarea( attrs={ 'id':"publisher", 'rows':1, 'class':"text ui-widget-content ui-corner-all" } ),
+			'year': Textarea( attrs={ 'id':"year", 'rows':1, 'class':"text ui-widget-content ui-corner-all" } ),
 		}
 
 class UploadBibTeXForm( Form ):
