@@ -22,9 +22,8 @@
 <p>The remaining of this page shows some detail of the features to create and manage knowledge items.</p>
 
 <h2>User Based approach</h2>
-<p>Access to the application is given under request, then the newly added user can access the website using username and password supplied. Afterwards a new password can be chosen.</p>
+<p>Access to the application is given under request, then the newly added user can access the website using username and password supplied.</p>
 <img src="/static/images/photos/1_login.png" alt="login" style="border: solid 2px grey;" /> 
-<img src="/static/images/photos/1_changepassword.png" alt="change password" style="border: solid 2px grey;" /> 
 <p>
 To ease interaction with the system, few operation are allowed and (when permitted) always ready to the user, represented just by icons to keep the interface as clean as possible:</p>
 <ul>
@@ -33,6 +32,11 @@ To ease interaction with the system, few operation are allowed and (when permitt
 <li><span class="actions delete" style="float:left; margin-top:0px; margin-right:5px; cursor:default;"></span> <b>Deleting</b> button: it enables the user to hide the item (real deletion is left on the admin side, to ensure no data are lost).</li>
 <li><span class="actions spec_page" style="float:left; margin-top:0px; margin-right:5px; cursor:default;"></span> <b>Inspecting</b> button: when available, it opens a new browser tab, containing all data for the item chosen. It is a non-interactive page, in order to avoid multiple path to access and produce the same information.</li>
 </ul>
+<h3>User Creation and Access Rights</h3>
+<p>The admin has the rights to create new users from the Django Admin interface:</p>
+<img src="/static/images/photos/add_user.png" alt="login" style="border: solid 2px grey;" /> 
+<p>The admin has to explicitly assign rights to the newly created user, through the user detail page:</p>
+<img src="/static/images/photos/user_rights.png" alt="login" style="border: solid 2px grey;" /> 
 
 <h2>Questions: requests for Statements</h2>
 <p>In order to enlarge the knowlegde and shape statements, a 'request for statement' approach has been chosen, resembling <a href="http://stackoverflow.com" target="_blank">stackoverflow.com</a>, a community-driven, programming question&answer website.<br/>
