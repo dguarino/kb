@@ -144,20 +144,9 @@ jQuery(document).ready(function(){
 
 	$( "#add-stmt" )
 		.click(function() {
-			$("#statement_recommend").dialog({
-				modal:true, 
-				title:"Read Carefully",
-				height: 600,
-				width: 700,
-				buttons: {
-					Ok: function() {
-						$( this ).dialog( "close" );
-						$( "#dialog-form" )
-							.data( 'edit', {ntt_id:-1, entity:"stmt", title:"New Statement"} )
-							.dialog( "open" );
-					}
-				}
-			});
+			$( "#dialog-form" )
+				.data( 'edit', {ntt_id:-1, entity:"stmt", title:"New Statement"} )
+				.dialog( "open" );
 		}
 	);
 
@@ -208,7 +197,7 @@ jQuery(document).ready(function(){
 			{{ stmt.text }}
 		</div>
 		</a>
-		{% tags_for_object stmt as tags %}
+		{% tags_for_object stmt as stmt_tags %}
 		{% if user.id == stmt.user.id %}
 		<span id="{{stmt.id}}" class="actions edit stmt"></span>
 		<span id="{{stmt.id}}" class="actions delete stmt"></span>
@@ -218,7 +207,7 @@ jQuery(document).ready(function(){
 		<span class="actions comment_count">Topics and {{ stmt_comment_count }} Comments</span>
 		<span class="actions toggle"></span>
 		<div class="map_list {{stmt.color}} record-content cont{{stmt.color}}">
-		<span class="tags"><strong>Topics</strong>: {% for tag in tags %}<a name="tag" title="See all '{{tag}}' statements" onclick="setFilterAndSubmit('stmt','{{tag}}')">{{tag}}</a>, {% endfor %}<br/><strong>Comments</strong>:</span>
+		<span class="tags"><strong>Topics</strong>: {% for tag in stmt_tags %}<a name="tag" title="See all '{{tag}}' statements" onclick="setFilterAndSubmit('stmt','{{tag}}')">{{tag}}</a>, {% endfor %}<br/><strong>Comments</strong>:</span>
 			{% render_comment_list for stmt %}
 			{% render_comment_form for stmt %}
 		</div>
@@ -280,15 +269,17 @@ jQuery(document).ready(function(){
 		<a href="/knowledgebase/map/article/{{article.id}}">
 		<div class="map_list {{article.color}}">{{ article }}</div>
 		</a>
+		{% tags_for_object article as artl_tags %}
 		{% if user.id == article.user.id %}
 		<span id="{{article.id}}" class="actions edit artl"></span>
 		<span id="{{article.id}}" class="actions delete artl"></span>
 		{% endif %}
 		<a class="actions spec_page" href="/knowledgebase/detail/article/{{article.id}}" target="_blank"></a>
 		{% get_comment_count for article as artl_comment_count %}
-		<span class="actions comment_count">{{ artl_comment_count }} Comments</span>
+		<span class="actions comment_count">Annotations and {{ artl_comment_count }} Comments</span>
 		<span class="actions toggle"></span>
 		<div class="map_list {{article.color}} record-content cont{{article.color}}">
+		<span class="tags"><strong>Annotations</strong>: {% for tag in artl_tags %}<a name="tag" title="See all '{{tag}}' articles" onclick="setFilterAndSubmit('artl','{{tag}}')">{{tag}}</a>, {% endfor %}<br/><strong>Comments</strong>:</span>
 			{% render_comment_list for article %}
 			{% render_comment_form for article %}
 		</div>

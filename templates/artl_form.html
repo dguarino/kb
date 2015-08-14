@@ -3,8 +3,8 @@
 	<script type="text/javascript" src="/static/taginput/jquery.taginput.src.js"></script>
 	<fieldset>
 	<input type="hidden" name="user" value="{{user.id}}">
-    <input type="hidden" id="id_annotations" name="annotations" value="{{annotations}}"/>
-    <input type="hidden" id="id_tags" name="tags" value="{{annotations}}"/>
+    <input type="hidden" id="id_annotations" name="annotations" value="{{annotations}}">
+    <input type="hidden" id="id_tags" name="tags" value="{{annotations}}">
 	<label for="title">Title</label>
 	{{form.title}}
 	<label for="author">Authors</label>
@@ -20,16 +20,20 @@
 	<label for="pages">Pages</label>
 	{{form.pages}}
 	<label>Annotations</label>
-	<!-- {{form.annotations}} -->
-	<input id="notes"></input>
+	<input id="notes" name="notes" value="{{annotations}}"/>
 	</fieldset>
 </form>
-
 <script type="text/javascript">
-$('notes').taginput({
-	style: 'bootstrap',
-	placeholder: 'Add annotation ...'
-	// $('#id_tags').val( txt );
-	// $('#id_topics').val( txt );
+$('#notes').taginput({
+	placeholder: '...',
+	onAdd: function(txt){
+		$('#id_tags').val( txt + ', ' + $('#id_tags').val() );
+		$('#id_annotations').val( txt + ', ' + $('#id_annotations').val() );
+	},
+	onRemove: function(txt){
+		var new_val = $('#notes').val().replace(txt, "")
+		$('#id_tags').val( new_val );
+		$('#id_annotations').val( new_val );
+	},
 });
 </script>

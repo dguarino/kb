@@ -17,16 +17,20 @@ from django.template import Context, RequestContext, loader
 
 from tagging.models import Tag
 
-from maps.models import StatementRequest
 from maps.models import Statement
+from maps.models import StatementForm
+
 from maps.models import Article
+from maps.models import ArticleForm
+
 from maps.models import Evidence
+from maps.models import EvidenceForm
+
+from maps.models import StatementRequest
+from maps.models import StatementRequestForm
+
 from maps.models import Figure
 from maps.models import Measurement
-from maps.models import StatementRequestForm
-from maps.models import StatementForm
-from maps.models import EvidenceForm
-from maps.models import ArticleForm
 
 from maps.models import UploadBibTeXForm
 from maps.management.commands.import_bibtex import handle_bibtex
@@ -80,6 +84,7 @@ def stmt_requests_add( request ) :
 		return HttpResponse( res )
 
 
+
 @login_required
 def stmt_requests_edit( request ) :
 	ntt_id = int( request.GET.get('ntt_id', 0) )
@@ -100,7 +105,7 @@ def add( request ) :
 	res = ValueError
 	entity = request.GET.get('entity', "")
 	ntt_id = int( request.GET.get('ntt_id', 0) )
-	print ntt_id
+	# print ntt_id
 	if entity == 'stmt' :
 		form = StatementForm( auto_id=False )
 		if ntt_id > 0 :
@@ -161,6 +166,7 @@ def edit( request ) :
 	annotations = ''
 	annotations_list = []
 	# Entity type switch
+	# Statement
 	if entity == 'stmt' :
 		form = StatementForm( auto_id=False )
 		formtempl = "stmt_form.html"
@@ -169,14 +175,16 @@ def edit( request ) :
 			if len(s.tags) > 0 :
 				topic_list = s.tags.values_list('name',flat=True)
 				topic = ', '.join( topic_list )
-				print topic
+				# print topic
 			form = StatementForm( instance=s, initial={'tags':topic} )
+	# Evidence
 	elif entity == 'evdc' :
 		form = EvidenceForm( auto_id=False )
 		formtempl = "evdc_form.html"
 		if ntt_id > 0 :
 			e = Evidence.objects.get( pk=ntt_id )
 			form = EvidenceForm( instance=e )
+	# Article
 	elif entity == 'artl' :
 		form = ArticleForm( auto_id=False )
 		formtempl = "artl_form.html"
@@ -185,7 +193,7 @@ def edit( request ) :
 			if len(a.tags) > 0 :
 				annotations_list = a.tags.values_list('name',flat=True)
 				annotations = ', '.join( annotations_list )
-				print annotations
+				# print annotations
 			form = ArticleForm( instance=a, initial={'tags':annotations} )
 	# create form html
 	template_vars = RequestContext( 
@@ -266,8 +274,8 @@ def getFilters( request ) :
 	# filtered ids
 	filtered_stmt_ids = []
 	if stmt_string != "" :
-       		entry_query = get_query( stmt_string, ['text','topics',] )
-       		stmt_list = Statement.objects.filter( entry_query )
+		entry_query = get_query( stmt_string, ['text','topics',] )
+		stmt_list = Statement.objects.filter( entry_query )
 		for s in stmt_list :
 			filtered_stmt_ids.append( s.id )
 	# EVDC
@@ -284,8 +292,8 @@ def getFilters( request ) :
 	# filtered ids
 	filtered_evdc_ids = []
 	if evdc_string != "" :
-       		entry_query = get_query( evdc_string, ['name',] )
-       		evdc_list = Evidence.objects.filter( entry_query )
+		entry_query = get_query( evdc_string, ['name',] )
+		evdc_list = Evidence.objects.filter( entry_query )
 		for e in evdc_list :
 			filtered_evdc_ids.append( e.id )
 	# ARTL
@@ -302,10 +310,12 @@ def getFilters( request ) :
 	# filtered ids
 	filtered_artl_ids = []
 	if artl_string != "" :
-       		entry_query = get_query( artl_string, ['title','author','annotations',] )
-       		artl_list = Article.objects.filter( entry_query )
+		entry_query = get_query( artl_string, ['title','author','annotations',] )
+		artl_list = Article.objects.filter( entry_query )
+		# print artl_list
 		for a in artl_list :
 			filtered_artl_ids.append( a.id )
+	# print "getFilters:",filtered_artl_ids
 	# output
 	return { 
 		'stmt':stmt_string, 
@@ -447,6 +457,9 @@ def getArticles( request, ref, filters, setFrom ) :
 			).order_by('color')
 	# filters
 	filtered_artl_ids = []
+	if len(filters['artl_ids']) > 0 :
+		filtered_artl_ids = filters['artl_ids']
+	# other filters already in place
 	if len(filters['stmt_ids']) > 0 :
 		evdc_stmt = Evidence.objects.filter( supports__id__in=filters['stmt_ids'] ).exclude(hide=True)
 		for e in evdc_stmt :
@@ -605,7 +618,7 @@ def upload_bibtex(request):
 	if request.method == 'POST':
 		form = UploadBibTeXForm( request.POST, request.FILES )
 		if form.is_valid():
-			print request.FILES['file']
+			# print request.FILES['file']
 			handle_bibtex( request.FILES['file'], user=user )
 			return HttpResponseRedirect( '/knowledgebase/map/' )
 	else:
@@ -650,36 +663,37 @@ def comment_post_wrapper( request ):
 	return HttpResponseRedirect( '/knowledgebase/map/' + entity + '/' + str(ntt_id) )
 
 
+
 # SEARCH
-def normalize_query(query_string,
-                    findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
-                    normspace=re.compile(r'\s{2,}').sub):
-    ''' Splits the query string in invidual keywords, getting rid of unecessary spaces
-        and grouping quoted words together.
-        Example:
-        
-        >>> normalize_query('  some random  words "with   quotes  " and   spaces')
-        ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
+def normalize_query(query_string, findterms=re.compile(r'"([^"]+)"|(\S+)').findall, normspace=re.compile(r'\s{2,}').sub):
+    ''' 
+    Splits the query string in invidual keywords, getting rid of unecessary spaces
+    and grouping quoted words together.
+    Example:
     
+    >>> normalize_query('  some random  words "with   quotes  " and   spaces')
+    ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
     '''
     return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)] 
 
 def get_query(query_string, search_fields):
-    ''' Returns a query, that is a combination of Q objects. That combination
-        aims to search keywords within a model by testing the given search fields.
-    '''
-    query = None # Query to search for every search term        
-    terms = normalize_query(query_string)
-    for term in terms:
-        or_query = None # Query to search for a given term in each field
-        for field_name in search_fields:
-            q = Q(**{"%s__icontains" % field_name: term})
-            if or_query is None:
-                or_query = q
-            else:
-                or_query = or_query | q
-        if query is None:
-            query = or_query
-        else:
-            query = query | or_query
-    return query
+	''' 
+	Returns a query, that is a combination of Q objects. That combination
+	aims to search keywords within a model by testing the given search fields.
+	'''
+	query = None # Query to search for every search term        
+	terms = normalize_query(query_string)
+	for term in terms:
+		or_query = None # Query to search for a given term in each field
+		for field_name in search_fields:
+			# print field_name, term
+			q = Q(**{"%s__icontains" % field_name: term})
+			if or_query is None:
+				or_query = q
+			else:
+				or_query = or_query | q
+		if query is None:
+			query = or_query
+		else:
+			query = query | or_query
+	return query
