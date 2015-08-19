@@ -67,7 +67,7 @@ jQuery(document).ready(function(){
 						type: "GET",
 						data: $("#edit-form").serialize() + "&ntt_id="+$(this).data('edit').ntt_id,
 						success: function( response ){
-							alert( response );
+							//alert( response );
 							if( response.indexOf( "invalid data" ) == -1 )
 							{
 								$( "#dialog-form" ).dialog( "close" );
