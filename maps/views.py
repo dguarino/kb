@@ -1,6 +1,7 @@
 import datetime
 import re
-from django.http import HttpResponse
+import string
+from django.utils.encoding import smart_str
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.shortcuts import render
@@ -13,6 +14,7 @@ from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.template import Context, RequestContext, loader
 
 from tagging.models import Tag
@@ -631,6 +633,85 @@ def upload_bibtex(request):
 	} )
 	c.update(csrf(request))
 	return HttpResponse( t.render( c ) )
+
+
+
+@login_required
+def export_csv( request, verbose=True ):
+    if request.method != 'POST':
+        return HttpResponseRedirect( '/knowledgebase/map/' )
+    import csv
+    import zipfile
+    import StringIO
+    user = request.user
+    # get current filters
+    filters = getFilters( request )
+    if verbose:
+        print filters['stmt']
+        print filters['evdc']
+        print filters['artl']
+	# STATEMENTS 
+	stmt_list = getStatements( request, [0], filters, 'map' )
+    with open('statement.csv', 'wb') as stmt_file:
+        writer = csv.writer( stmt_file )
+        writer.writerow([ smart_str(u"ID"), smart_str(u"Text"), smart_str(u"Description"), smart_str(u"User"), smart_str(u"Topics") ])
+        for obj in stmt_list:
+            writer.writerow([ smart_str(obj.pk), smart_str(obj.text), smart_str(obj.description), smart_str(obj.user), smart_str(obj.topics) ])
+	# EVIDENCE
+	evdc_list = getEvidence( request, [0], filters, 'map' )
+    with open('evidence.csv', 'wb') as evdc_file:
+        writer = csv.writer( evdc_file )
+        writer.writerow([ smart_str(u"ID"), smart_str(u"Text"), smart_str(u"Article ID"), smart_str(u"User"), smart_str(u"Position"), smart_str(u"Supports IDs"), smart_str(u"Contrasts IDs") ])
+        for obj in evdc_list:
+            writer.writerow([ smart_str(obj.pk), smart_str(obj.name), smart_str(obj.article.pk), smart_str(obj.user), smart_str(obj.position), smart_str([c.pk for c in obj.supports.all()]), smart_str([c.pk for c in obj.contradicts.all()]) ])
+	# ARTICLES
+	artl_list = getArticles( request, [0], filters, 'map' ) 
+    with open('tmp_article.csv', 'wb') as artl_file:
+        writer = csv.writer( artl_file )
+        writer.writerow([ smart_str(u"ID"), smart_str(u"DOI"), smart_str(u"Title"), smart_str(u"Author"), smart_str(u"Year"), smart_str(u"Annotations") ])
+        for obj in artl_list:
+            row = [ smart_str(obj.pk), smart_str(obj.doi), smart_str(obj.title), smart_str(obj.author), smart_str(obj.year), smart_str(obj.annotations) ]
+            # append the full row
+            writer.writerow(row)
+    with open('article.csv', 'wb') as artl_file, open('tmp_article.csv', 'r') as read_artl:
+        reader = csv.DictReader( read_artl )
+        headers = reader.fieldnames
+        rows = []
+        for row in reader:
+            # split the annotations
+            an = string.split( row['Annotations'], ', ' )
+            for el in an:
+                if len(el)>3 and string.find(el, ':')>0:
+                    key,value = string.split(el,':')
+                    row[key] = value
+                    if not key in headers:
+                        headers.append(key)
+            rows.append(row)
+        writer = csv.DictWriter( artl_file, fieldnames=headers )
+        writer.writeheader()
+        for row in rows:
+            for key in headers:
+                if not key in row:
+                    row[key] = None
+            writer.writerow(row)
+                    
+    # Open StringIO to grab in-memory ZIP contents
+    s = StringIO.StringIO()
+    # The zip compressor
+    zf = zipfile.ZipFile(s, "w")
+    # Add file, at correct path
+    zf.write('statement.csv')
+    zf.write('evidence.csv')
+    zf.write('article.csv')
+    #with open('article.csv', 'rb') as artl_file:
+    #    zf.writestr('article.csv', artl_file.read())
+    # Must close zip for all contents to be written
+    zf.close()
+    # Grab ZIP file from in-memory, make response with correct MIME-type
+    resp = HttpResponse(s.getvalue(), content_type = "application/x-zip-compressed")
+    # ..and correct content-disposition
+    resp['Content-Disposition'] = 'attachment; filename=kb_export.zip'
+    return resp
 
 
 
