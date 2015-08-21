@@ -56,7 +56,7 @@ Your shell should look now something like::
 
 You can now install all the requirements using pip::
 
-	(kb) ...$ pip install -f requirements.txt
+	(kb) ...$ pip install -r requirements.txt
 
 You can use pip to view the installed packages::
 
