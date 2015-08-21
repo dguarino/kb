@@ -76,7 +76,7 @@ class Article( models.Model ) :
 	user = models.ForeignKey( User, null=False )
 	hide = models.BooleanField( default=False ) 
 	annotations = models.CharField( max_length=250, blank=True, null=True )
-	tags = models.CharField( 'Annotations', max_length=250, blank=True, null=True )
+	tags = models.CharField( 'Annotations', max_length=None, blank=True, null=True )
 
 	def _get_tags(self):
 		return Tag.objects.get_for_object(self)

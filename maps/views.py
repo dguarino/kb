@@ -681,8 +681,8 @@ def export_csv( request, verbose=True ):
             # split the annotations
             an = string.split( row['Annotations'], ', ' )
             for el in an:
-                if len(el)>3 and string.find(el, ':')>0:
-                    key,value = string.split(el,':')
+                if len(el)>3 and string.find(el, '=')>0:
+                    key,value = string.split(el,'=')
                     row[key] = value
                     if not key in headers:
                         headers.append(key)
