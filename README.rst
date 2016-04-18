@@ -62,9 +62,27 @@ You can use pip to view the installed packages::
 
 	(kb) ...$ pip freeze
 
-Once installed, you shoud be able to run the demo-server with::
+Once installed, you shoud create the demo-server with::
 
 	(kb) ... $ python manage.py makemigrations maps
 	(kb) ... $ python manage.py migrate
-	...
+
+Then you should create an admin for the website::
+
+	(kb) ... $ python manage.py createsuperuser
+	Username (leave blank to use '...'): ...
+	Email address: ...
+	Password: ...
+	Password (again): ...
+	Superuser created successfully.
+
+And now you can run the server::
 	(kb) ... $ python manage.py runserver
+
+To access the interface, open a browser and hit the address:: 
+
+	http://127.0.0.1:8000/knowledgebase
+
+Ant to access the admin (in order to create new users and so on), hit the address::
+
+	http://127.0.0.1:8000/knowledgebase/admin
