@@ -56,29 +56,28 @@ Your shell should look now something like::
 
 You can now install all the requirements using pip::
 
-	(kb) ...$ pip install -r requirements.txt
+	(kb) $ pip install -r requirements.txt
 
 You can use pip to view the installed packages::
 
-	(kb) ...$ pip freeze
+	(kb) $ pip freeze
 
 Once installed, you shoud create the demo-server with::
 
-	(kb) ... $ python manage.py makemigrations maps
-	(kb) ... $ python manage.py migrate
+	(kb) $ python manage.py makemigrations maps
+	(kb) $ python manage.py migrate
 
 Then you should create an admin for the website::
 
-	(kb) ... $ python manage.py createsuperuser
+	(kb) $ python manage.py createsuperuser
 	Username: ...
 	Email address: ...
 	Password: ...
 	Password (again): ...
-	Superuser created successfully.
-
+	Superuser created successfully
 
 And now you can run the server::
-	(kb) ... $ python manage.py runserver
+	(kb) $ python manage.py runserver
 
 To access the interface, open a browser and hit the address:: 
 
