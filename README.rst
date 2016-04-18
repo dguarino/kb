@@ -77,6 +77,7 @@ Then you should create an admin for the website::
 	Superuser created successfully
 
 And now you can run the server::
+
 	(kb) $ python manage.py runserver
 
 To access the interface, open a browser and hit the address:: 
