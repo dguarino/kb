@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form  action="/knowledgebase/tagsupload" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<h3>How to upload your tags</h3>
+	Before using this upload page, be sure you did the following:
+	<ol>
+		<li>Export the list of article using the 'Export CSV' link above.</li>
+		<li>Open the 'article.csv' file you get in the exported zip.</li>
+		<li>The first line contains headers for the fields. Append there a new tag label (rememeber the separation comma!).</li>
+		<li>Append at the end of each line the tag value (rememeber the separation comma!).</li>
+		<li>Save and close the CSV file.</li>
+	<ol/>
+	<br/>
+	Now you can upload your tags for articles ...
+	<p>
+		{{ form.file }}
+	</p>
+	<p><input type="submit" value="Upload Tags" /></p>
+</form>
+
+{% endblock %}

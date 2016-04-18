@@ -1,7 +1,8 @@
-# ADDITIONAL COMMAND TO IMPORT BibTeX files
+# ADDITIONAL COMMAND TO IMPORT DATA FROM FILES
 # Usage:
 # $ python manage.py import_bibtex sample.bib
 
+# LATEX
 import bibtexparser
 from bibtexparser.bparser import BibTexParser
 from bibtexparser.customization import convert_to_unicode
@@ -11,6 +12,11 @@ from django.contrib.auth.models import User
 
 from maps.models import Article
 
+# CSV TAGS (assuming matching articles ids)
+from tagging.models import Tag
+import csv
+import StringIO
+
 
 def clean_entry( entry, check ):
     for key in entry.keys():
@@ -19,7 +25,7 @@ def clean_entry( entry, check ):
     return entry
 
 
-def handle_bibtex( file, user=None, verbose=False ):
+def handle_bibtex( infile, user=None, verbose=False ):
     if user:
         u = user
     else:
@@ -28,7 +34,7 @@ def handle_bibtex( file, user=None, verbose=False ):
     # load bibtex file to in-memory db
     parser = BibTexParser()
     parser.customization = convert_to_unicode
-    bib_database = bibtexparser.load(file, parser=parser)
+    bib_database = bibtexparser.load(infile, parser=parser)
     for art in bib_database.entries:
         if len( Article.objects.filter(title=art['title']) ) == 0:
             art = clean_entry( art, [ 'title', 'author', 'journal', 'publisher', 'year', 'volume', 'pages'] )
@@ -36,6 +42,25 @@ def handle_bibtex( file, user=None, verbose=False ):
             if verbose:
                 print a
             a.save()
+
+
+def handle_csv( infile, user=None, verbose=False ):
+    if user:
+        u = user
+    else:
+        u = User.objects.get(username='admin')
+    # manage data
+    # load bibtex file to in-memory db
+    with open(infile, mode='r') as f:
+        reader = csv.DictReader(f, delimiter=',')
+        for row in reader:
+            a = Article.objects.get( pk=row['ID'] )
+            for tagname in row.keys():
+                if tagname not in ['ID','DOI','Title','Author','Year','Annotations']:
+                    if row[tagname] != '':
+                        Tag.objects.add_tag( a, tagname+":"+row[tagname])
+
+
 
 
 class Command(BaseCommand):

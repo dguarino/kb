@@ -17,8 +17,6 @@ SECRET_KEY = 'y8(ex1fw%5*p+fnalvo4(clhtu+d64e7bc#=h32j%o7e5i*v)t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-if True:
-    DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

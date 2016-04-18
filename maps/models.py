@@ -111,7 +111,9 @@ class ArticleForm( ModelForm ) :
 class UploadBibTeXForm( Form ):
     file = FileField()
 
-
+class UploadCSVForm( Form ):
+	file = FileField()
+	
 
 
 # Evidences

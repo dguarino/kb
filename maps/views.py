@@ -35,7 +35,9 @@ from maps.models import Figure
 from maps.models import Measurement
 
 from maps.models import UploadBibTeXForm
-from maps.management.commands.import_bibtex import handle_bibtex
+from maps.management.commands.import_data import handle_bibtex
+from maps.models import UploadCSVForm
+from maps.management.commands.import_data import handle_csv
 
 
 
@@ -637,6 +639,30 @@ def upload_bibtex(request):
 
 
 @login_required
+@csrf_protect
+def upload_csv(request):
+	user = request.user
+	# file handling
+	if request.method == 'POST':
+		form = UploadCSVForm( request.POST, request.FILES )
+		if form.is_valid():
+			# handle_csv( request.FILES['file'], user=user )
+			handle_csv( request.FILES['file'].name, user=user )
+			return HttpResponseRedirect( '/knowledgebase/map/' )
+	else:
+			form = UploadCSVForm()
+	# render
+	t = loader.get_template( 'tagsupload.html' )
+	c = Context( {
+		'user': user,
+		'form': form,
+	} )
+	c.update(csrf(request))
+	return HttpResponse( t.render( c ) )
+
+
+
+@login_required
 def export_csv( request, verbose=True ):
     if request.method != 'POST':
         return HttpResponseRedirect( '/knowledgebase/map/' )
@@ -681,8 +707,8 @@ def export_csv( request, verbose=True ):
             # split the annotations
             an = string.split( row['Annotations'], ', ' )
             for el in an:
-                if len(el)>3 and string.find(el, '=')>0:
-                    key,value = string.split(el,'=')
+                if len(el)>3 and string.find(el, ':')>0:
+                    key,value = string.split(el,':')
                     row[key] = value
                     if not key in headers:
                         headers.append(key)

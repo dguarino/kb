@@ -47,6 +47,7 @@ urlpatterns = patterns('',
 	url( r'^knowledgebase/detail/(?P<entity>[a-z]+)/(?P<ntt_id>\d+)/$', 'maps.views.detail' ),
 
 	url( r'^knowledgebase/upload$', 'maps.views.upload_bibtex' ),
+	url( r'^knowledgebase/tagsupload$', 'maps.views.upload_csv' ),
 	url( r'^knowledgebase/export$', 'maps.views.export_csv' ),
 
 	url( r'^knowledgebase/comments/post/', 'maps.views.comment_post_wrapper' ),
