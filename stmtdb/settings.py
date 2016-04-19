@@ -1,6 +1,7 @@
 import os
 PROJ_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(PROJ_DIR)
+DATA_DIR = '/tmp'
 
 # Site options
 SITE_ID = 1
@@ -16,7 +17,8 @@ SITE_LOGO_ALT = "Your website logo here."
 SECRET_KEY = 'y8(ex1fw%5*p+fnalvo4(clhtu+d64e7bc#=h32j%o7e5i*v)t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -83,7 +85,7 @@ WSGI_APPLICATION = 'stmtdb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(DATA_DIR, 'db.sqlite3'),
     }
 }
 
