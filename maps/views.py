@@ -646,8 +646,7 @@ def upload_csv(request):
 	if request.method == 'POST':
 		form = UploadCSVForm( request.POST, request.FILES )
 		if form.is_valid():
-			# handle_csv( request.FILES['file'], user=user )
-			handle_csv( request.FILES['file'].name, user=user )
+			handle_csv( request.FILES['file'], user=user )
 			return HttpResponseRedirect( '/knowledgebase/map/' )
 	else:
 			form = UploadCSVForm()
@@ -709,9 +708,9 @@ def export_csv( request, verbose=True ):
             for el in an:
                 if len(el)>3 and string.find(el, ':')>0:
                     key,value = string.split(el,':')
-                    row[key] = value
                     if not key in headers:
                         headers.append(key)
+                    row[key] = value
             rows.append(row)
         writer = csv.DictWriter( artl_file, fieldnames=headers )
         writer.writeheader()

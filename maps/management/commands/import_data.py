@@ -17,6 +17,8 @@ from tagging.models import Tag
 import csv
 import StringIO
 
+import logging
+logger = logging.getLogger('django')
 
 def clean_entry( entry, check ):
     for key in entry.keys():
@@ -45,20 +47,19 @@ def handle_bibtex( infile, user=None, verbose=False ):
 
 
 def handle_csv( infile, user=None, verbose=False ):
-    if user:
-        u = user
-    else:
-        u = User.objects.get(username='admin')
-    # manage data
-    # load bibtex file to in-memory db
-    with open(infile, mode='r') as f:
-        reader = csv.DictReader(f, delimiter=',')
-        for row in reader:
-            a = Article.objects.get( pk=row['ID'] )
-            for tagname in row.keys():
-                if tagname not in ['ID','DOI','Title','Author','Year','Annotations']:
-                    if row[tagname] != '':
-                        Tag.objects.add_tag( a, tagname+":"+row[tagname])
+    reader = csv.DictReader(infile, delimiter=',')
+    for row in reader:
+        an = []
+        a = Article.objects.get( pk=row['ID'] )
+        for tagname in row.keys():
+            if tagname not in ['ID','DOI','Title','Author','Year','Annotations']:
+                if row[tagname] != '':
+                    t = tagname+":"+row[tagname]
+                    an.append(t)
+                    Tag.objects.add_tag( a, t)
+                    # logger.error(tagname+":"+row[tagname])
+        a.annotations = ", ".join(an)
+        a.save()
 
 
 
