@@ -4,8 +4,10 @@ Knowledge Base
 Django project to manage Scientific Knowledge Bases.
 
 
-Installation intructions
-========================
+Installation intructions (local)
+================================
+
+(for web development, see below the dockerized version)
 
 Dependencies
 ------------
@@ -17,6 +19,7 @@ Dependencies
 * django-tagging
 * pytz
 * tagging
+
 
 Installation
 ------------
@@ -87,3 +90,9 @@ To access the interface, open a browser and hit the address::
 Ant to access the admin (in order to create new users and so on), hit the address::
 
 	http://127.0.0.1:8000/knowledgebase/admin
+
+
+Installation intructions (Docker)
+=================================
+
+Just read the Dockerfile.
